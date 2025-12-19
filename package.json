@@ -1,0 +1,19 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "learning node, express and mongoDB",
+  "license": "ISC",
+  "author": "shiva",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
