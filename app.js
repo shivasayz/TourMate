@@ -34,7 +34,7 @@ app.use("/api/v1/welcome", (req, res) => {
     status: "success",
     result: {
       data: [],
-      message: "Custome route to check nodemon"
+      message: "custome route to check nodemon"
     },
     error: {
       status: null,
