@@ -10,6 +10,7 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 app.use(express.json());
 //server static files - middleware
 app.use(express.static(`./public`));
