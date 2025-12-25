@@ -1,3 +1,4 @@
+import { format } from 'morgan';
 import { Tour } from '../models/modelsExport.js';
 import APIFeatures from './../utils/apiFeatures.js';
 
@@ -149,6 +150,67 @@ const getTourStats = async (req, res) => {
   }
 };
 
+const getMonthlyPlan = async (req, res) => {
+  try {
+    const year = req.params.year * 1;
+
+    const plan = await Tour.aggregate([
+      {
+        $unwind: '$startDates',
+      },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: '$startDates' },
+          numToursStarts: { $sum: 1 },
+          tours: { $push: '$name' },
+        },
+      },
+      {
+        $addFields: { month: '$_id' , monthStr: {
+          $arrayElemAt: [
+            [
+              "January","February","March","April","May","June",
+              "July","August","September","October","November","December"
+            ],
+            { $subtract: ["$_id", 1] }
+          ]
+        }},
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          numToursStarts: -1,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      total: plan.length,
+      data: {
+        plan,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'failed',
+      message: err,
+    });
+  }
+};
+
 export default {
   getAllTours,
   getTourById,
@@ -156,5 +218,6 @@ export default {
   updateTour,
   deleteTour,
   aliasTopTours,
-  getTourStats
+  getTourStats,
+  getMonthlyPlan,
 };
