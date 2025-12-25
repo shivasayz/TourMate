@@ -1,5 +1,5 @@
 import { Tour } from '../models/modelsExport.js';
-import APIFeatures from "./../utils/apiFeatures.js";
+import APIFeatures from './../utils/apiFeatures.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -115,6 +115,40 @@ const deleteTour = async (req, res) => {
   }
 };
 
+const getTourStats = async (req, res) => {
+  try {
+    const stats = await Tour.aggregate([
+      { $match: { ratingAverage: { $gte: 4.5 } } },
+      {
+        $group: {
+          _id: { $toUpper: '$difficulty' },
+          numTour: { $sum: 1 },
+          numRatings: { $sum: '$ratingQuantity' },
+          avgRatings: { $avg: '$ratingAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' },
+        },
+      },
+      // {
+      //   $match: { _id: { $ne: 'DIFFICULT' } },
+      // },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'failed',
+      message: err,
+    });
+  }
+};
+
 export default {
   getAllTours,
   getTourById,
@@ -122,4 +156,5 @@ export default {
   updateTour,
   deleteTour,
   aliasTopTours,
+  getTourStats
 };
