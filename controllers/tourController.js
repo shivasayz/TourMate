@@ -1,41 +1,85 @@
 import { Tour } from '../models/modelsExport.js';
 import qs from 'qs';
 
-const getAllTours = async (req, res) => {
-  try {
-    console.log(req.query);
+// middlewares
+const aliasTopTours = (req, res, next) => {
+  Object.defineProperty(req, 'query', {
+    value: {
+      limit: '5',
+      sort: 'price',
+      fields: 'name,price,ratingAverage,summary,difficulty',
+    },
+    writable: true,
+    configurable: true,
+  });
+
+  next();
+};
+
+class APIFeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+
+  filter() {
     // 1A. filtering
-    const queryObj = { ...qs.parse(req.query) };
+    const queryObj = { ...qs.parse(this.queryString) };
     const excludeFields = ['sort', 'page', 'limit', 'fields'];
     excludeFields.forEach((el) => delete queryObj[el]);
 
     // 1B. advanced filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    this.query = this.query.find(JSON.parse(queryStr));
 
-    let query = Tour.find(JSON.parse(queryStr));
+    return this;
+  }
 
+  sort() {
     // 2. sorting
-    if(req.query.sort){
-      const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(',').join(' ');
+      this.query = this.query.sort(sortBy);
     } else {
-      query = query.sort('-createdAt');
+      this.query = this.query.sort('-createdAt');
     }
 
+    return this;
+  }
+
+  limitFields() {
     // 3. limiting fields
-    if(req.query.fields){
-      const fields = req.query.fields.split(",").join(" ");
-      query = query.select(fields);
+    if (this.queryString.fields) {
+      const fields = this.queryString.fields.split(',').join(' ');
+      this.query = this.query.select(fields);
     } else {
-      query.select("-__v");
+      this.query.select('-__v');
     }
 
-    // 4. pagination
-    
+    return this;
+  }
 
+  paginate() {
+    // 4. pagination
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
+}
+
+const getAllTours = async (req, res) => {
+  try {
     // execute query
-    const tours = await query;
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .paginate()
+      .limitFields();
+    const tours = await features.query;
 
     // send response
     res.status(200).json({
@@ -131,4 +175,5 @@ export default {
   createTour,
   updateTour,
   deleteTour,
+  aliasTopTours,
 };
