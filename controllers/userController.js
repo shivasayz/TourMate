@@ -1,9 +1,15 @@
-export function getAllUsers(req, res) {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not yet defined!',
+import catchAsync from '../utils/catchAsync.js';
+import { User } from '../models/modelsExport.js';
+import appError from '../utils/appError.js';
+
+const getAllUsers = catchAsync( async (req, res, next) => {
+  const user = await User.find();
+
+  res.status(200).json({
+    status: 'success',
+    message: user
   });
-}
+});
 
 export function createUser(req, res) {
   res.status(500).json({
@@ -31,4 +37,8 @@ export function getUser(req, res) {
     status: 'error',
     message: 'this route is not yet defined!',
   });
+}
+
+export {
+  getAllUsers
 }

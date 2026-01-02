@@ -1,19 +1,23 @@
 import catchAsync from '../utils/catchAsync.js';
 import { User } from '../models/modelsExport.js';
-import jwt from "jsonwebtoken";
+import appError from './../utils/appError.js';
+import jwt from 'jsonwebtoken';
+
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPAIR_IN,
+  });
+};
 
 export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    confirmPassword: req.body.confirmPassword
+    confirmPassword: req.body.confirmPassword,
   });
 
-  const token = jwt.sign({ id: newUser._id}, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPAIR_IN
-  })
-
+  const token = signToken(newUser._id);
 
   res.status(201).json({
     status: 'success',
@@ -22,5 +26,29 @@ export const signup = catchAsync(async (req, res, next) => {
       user: newUser,
     },
   });
-  // next();
+});
+
+export const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // check if email and password exists in payload for client
+  if (!email?.trim() || !password?.trim()) {
+    return next(new appError('Please provide email and password', 400));
+  }
+
+  // check if user exists && password is correct
+  const user = await User.findOne({ email }).select('+password');
+  // const correct = await user.correctPassword(password, user.password);
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new appError('Incorrect email or password', 401));
+  }
+
+  // if everything goes well, send the jwt token to client as response
+  const token = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
 });
