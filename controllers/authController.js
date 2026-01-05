@@ -16,7 +16,8 @@ export const signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
-    passwordChangedAt: req.body.passwordChangedAt
+    passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role
   });
 
   const token = signToken(newUser._id);
@@ -92,3 +93,14 @@ export const Protected = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+export const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new appError('You do not have premission to perform this action', 403)
+      );
+    }
+    next();
+  };
+};
