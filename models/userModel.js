@@ -1,51 +1,59 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
+import crypto from 'crypto';
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "Please tell us your name!"]
-    },
+  name: {
+    type: String,
+    required: [true, 'Please tell us your name!'],
+  },
 
-    email: {
-        type: String,
-        required: [true, "Please provide your email"],
-        unique: true,
-        lowercase: true,
-        validate: [validator.isEmail, 'Please provide valid email']
-    },
+  email: {
+    type: String,
+    required: [true, 'Please provide your email'],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Please provide valid email'],
+    trim: true,
+  },
 
-    password: {
-        type: String,
-        required: [true, "Please provide your password"],
-        minlength: 8,
-        select: false
-    },
+  password: {
+    type: String,
+    required: [true, 'Please provide your password'],
+    minlength: 8,
+    select: false,
+    trim: true,
+  },
 
-    role: {
-      type: String,
-      enum: ['user', 'guide', 'lead-guide', 'admin'],
-      default: 'user'
-    },
-    
-    confirmPassword: {
-        type: String,
-        required: [true, "Please confirm your password"],
-        validate: {
-            validator: function(el) {
-                return el === this.password
-            },
-            message: 'Password are not same!'
-        }
-    },
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
+  },
 
-    passwordChangedAt: Date,
-
-    photo: {
-        type: String
+  confirmPassword: {
+    type: String,
+    required: [true, 'Please confirm your password'],
+    validate: {
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: 'Password are not same!',
     },
-})
+    trim: true,
+  },
+
+  passwordChangedAt: Date,
+
+  passwordResetToken: String,
+
+  passwordResetExpires: Date,
+
+  photo: {
+    type: String,
+  },
+});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
@@ -75,6 +83,21 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 
   // User has not changed the password after the JWTTimestamp
   return false;
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToke = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToke)
+    .digest('hex');
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 min
+
+  console.log({ resetToke }, this.passwordResetToken);
+
+  return resetToke;
 };
 
 const User = mongoose.model('User', userSchema);
