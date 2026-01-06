@@ -6,7 +6,13 @@ import {
   updateUser,
   deleteUser,
 } from './../controllers/userController.js';
-import  { signup, login, Protected, forgotPassword, resetPassword }  from '../controllers/authController.js';
+import {
+  signup,
+  login,
+  Protected,
+  forgotPassword,
+  resetPassword,
+} from '../controllers/authController.js';
 
 const userRouter = express.Router();
 
@@ -15,14 +21,7 @@ userRouter.post('/login', login);
 userRouter.post('/forgotPassword', forgotPassword);
 userRouter.post('/resetPassword', resetPassword);
 
-userRouter
-  .route(`/`)
-  .get(Protected, getAllUsers)
-  .post(createUser);
-userRouter
-  .route(`/:id`)
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+userRouter.route(`/`).get(Protected, getAllUsers).post(createUser);
+userRouter.route(`/:id`).get(getUser).patch(updateUser).delete(deleteUser);
 
 export default userRouter;
