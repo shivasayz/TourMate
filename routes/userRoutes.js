@@ -12,6 +12,7 @@ import {
   Protected,
   forgotPassword,
   resetPassword,
+  updatePassword
 } from '../controllers/authController.js';
 
 const userRouter = express.Router();
@@ -20,6 +21,7 @@ userRouter.post('/signup', signup);
 userRouter.post('/login', login);
 userRouter.post('/forgotPassword', forgotPassword);
 userRouter.patch('/resetPassword/:token', resetPassword);
+userRouter.patch('/updateMyPassword', Protected, updatePassword);
 
 userRouter.route(`/`).get(Protected, getAllUsers).post(createUser);
 userRouter.route(`/:id`).get(getUser).patch(updateUser).delete(deleteUser);
