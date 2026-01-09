@@ -1,3 +1,4 @@
+import './env.js'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
@@ -7,10 +8,8 @@ process.on('uncaughtException', err => {
   process.exit(1);
 })
 
-dotenv.config({ path: './config.env' });
+// dotenv.config({ path: './config.env' });
 
-import express from 'express';
-import morgan from 'morgan';
 import app from './app.js';
 
 console.log("IN 🖥️  -->",process.env.NODE_ENV);
