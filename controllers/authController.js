@@ -54,7 +54,7 @@ export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // check if email and password exists in payload for client
-  if (!email?.trim() || !password?.trim()) {
+  if (!email || !password ) {
     return next(new appError('Please provide email and password.', 400));
   }
 
