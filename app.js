@@ -3,10 +3,13 @@ import morgan from 'morgan';
 import tourRouter from './routes/tourRouters.js';
 import userRouter from './routes/userRoutes.js';
 import appError from './utils/appError.js';
-import  globalErrorHandler from './controllers/errorController.js';
+import globalErrorHandler from './controllers/errorController.js';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
 const app = express();
+
+app.use(helmet());
 
 // Middleware
 // console.log(process.env.NODE_ENV);
@@ -23,7 +26,9 @@ const limit = rateLimit({
 
 app.use('/api', limit);
 
-app.use(express.json());
+// Body parser, reading data from body into req,body
+app.use(express.json({ limit: '10kb' }));
+
 //server static files - middleware
 app.use(express.static(`./public`));
 
