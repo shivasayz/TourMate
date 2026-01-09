@@ -4,6 +4,7 @@ import tourRouter from './routes/tourRouters.js';
 import userRouter from './routes/userRoutes.js';
 import appError from './utils/appError.js';
 import  globalErrorHandler from './controllers/errorController.js';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 
@@ -12,6 +13,15 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// Rate limiter
+const limit = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour.',
+});
+
+app.use('/api', limit);
 
 app.use(express.json());
 //server static files - middleware
