@@ -29,7 +29,7 @@ const createTour = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllTours = catchAsync(async (req, res,next) => {
+const getAllTours = catchAsync(async (req, res, next) => {
   // execute query
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
