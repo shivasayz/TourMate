@@ -17,7 +17,8 @@ const createSendToken = (user, statusCode, res) => {
 
   const cookieOptions = {
     expires: new Date(
-      Date.now() + Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
+      Date.now() +
+        Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   };
@@ -54,7 +55,7 @@ export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // check if email and password exists in payload for client
-  if (!email || !password ) {
+  if (!email || !password) {
     return next(new appError('Please provide email and password.', 400));
   }
 
