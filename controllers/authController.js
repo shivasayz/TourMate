@@ -216,6 +216,6 @@ export const updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   await user.save();
 
-  // 4. Log user in, send JWT
+  // 4. Log user in, send JSON web token 
   createSendToken(user, 200, res);
 });
