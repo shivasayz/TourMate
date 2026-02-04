@@ -3,7 +3,7 @@ import reviewController from '../controllers/reviewController.js';
 import { Protected, restrictTo } from '../controllers/authController.js';
 const { getAllReviews, createReview } = reviewController;
 
-const reviewRouter = express.Router();
+const reviewRouter = express.Router({mergeParams: true});
 
 reviewRouter
   .route(`/`)

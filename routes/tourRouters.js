@@ -11,8 +11,13 @@ const {
   getTourStats,
   getMonthlyPlan,
 } = tourController;
+import reviewController from '../controllers/reviewController.js';
+const { createReview } = reviewController;
+import reviewRouter from './reviewRoutes.js';
 
 const router = express.Router();
+
+router.use('/:tourId/reviews', reviewRouter);
 
 router.route('/tour-stats').get(getTourStats);
 router.route(`/top-5-cheap`).get(aliasTopTours, getAllTours);
