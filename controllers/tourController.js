@@ -3,7 +3,7 @@ import { Tour } from '../models/modelsExport.js';
 import APIFeatures from './../utils/apiFeatures.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
-import { deleteOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne } from '../controllers/handlerFactory.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -64,26 +64,7 @@ const getTourById = catchAsync(async (req, res, next) => {
   });
 });
 
-const updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!tour) {
-    return next(new appError('No tour found with the id', 404));
-  }
-
-  res.status(200).json({
-    result: {
-      status: 'update success',
-      data: {
-        tour,
-      },
-    },
-  });
-});
-
+const updateTour = updateOne(Tour);
 const deleteTour = deleteOne(Tour);
 
 const getTourStats = catchAsync(async (req, res, next) => {

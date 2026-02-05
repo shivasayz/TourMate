@@ -1,7 +1,7 @@
 import Review from '../models/reviewModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
-import { deleteOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne } from '../controllers/handlerFactory.js';
 
 const getAllReviews = catchAsync(async (req, res, next) => {
   let filter = {};
@@ -32,9 +32,11 @@ const createReview = catchAsync(async (req, res, next) => {
 });
 
 const deleteReview = deleteOne(Review);
+const updateReview = updateOne(Review);
 
 export default {
   getAllReviews,
   createReview,
-  deleteReview
+  deleteReview,
+  updateReview
 };
