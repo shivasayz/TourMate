@@ -3,7 +3,7 @@ import { Tour } from '../models/modelsExport.js';
 import APIFeatures from './../utils/apiFeatures.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, createOne } from '../controllers/handlerFactory.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -19,16 +19,6 @@ const aliasTopTours = (req, res, next) => {
 
   next();
 };
-
-const createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
-});
 
 const getAllTours = catchAsync(async (req, res, next) => {
   // execute query
@@ -64,6 +54,7 @@ const getTourById = catchAsync(async (req, res, next) => {
   });
 });
 
+const createTour = createOne(Tour);
 const updateTour = updateOne(Tour);
 const deleteTour = deleteOne(Tour);
 
