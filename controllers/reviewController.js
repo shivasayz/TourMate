@@ -1,7 +1,7 @@
 import Review from '../models/reviewModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne, createOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, createOne, getOne } from '../controllers/handlerFactory.js';
 
 const getAllReviews = catchAsync(async (req, res, next) => {
   let filter = {};
@@ -26,13 +26,15 @@ const setTourUserIds = (req, res, next) => {
 }
 
 const createReview = createOne(Review);
-const deleteReview = deleteOne(Review);
 const updateReview = updateOne(Review);
+const deleteReview = deleteOne(Review);
+const getReview = getOne(Review);
 
 export default {
   getAllReviews,
   createReview,
   deleteReview,
   updateReview,
-  setTourUserIds
+  setTourUserIds,
+  getReview
 };

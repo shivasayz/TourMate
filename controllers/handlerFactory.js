@@ -1,6 +1,25 @@
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
 
+const getOne = (Model, popOptions) => catchAsync(async (req, res, next) => {
+  let query = Model.findById(req.params.id);
+  if(popOptions) query = query.populate(popOptions);
+  const doc = await query;
+
+  // const doc = await Model.findById(req.params.id).populate('reviews');
+
+  if (!doc) {
+    return next(new appError('No document found with the id', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: doc,
+    },
+  });
+});;
+
 const createOne = Model => catchAsync(async (req, res, next) => {
   const doc = await Model.create(req.body);
   res.status(201).json({
@@ -48,5 +67,6 @@ const deleteOne = (Model) => catchAsync(async (req, res, next) => {
   export {
     deleteOne,
     updateOne,
-    createOne
+    createOne,
+    getOne
   }

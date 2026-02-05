@@ -3,7 +3,7 @@ import { Tour } from '../models/modelsExport.js';
 import APIFeatures from './../utils/apiFeatures.js';
 import catchAsync from '../utils/catchAsync.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne, createOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, createOne, getOne } from '../controllers/handlerFactory.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -38,22 +38,7 @@ const getAllTours = catchAsync(async (req, res, next) => {
   });
 });
 
-const getTourById = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // Tour.findOne({_id: req.params.id});
-
-  if (!tour) {
-    return next(new appError('No tour found with the id', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
+const getTourById = getOne(Tour, { path: 'reviews'})
 const createTour = createOne(Tour);
 const updateTour = updateOne(Tour);
 const deleteTour = deleteOne(Tour);

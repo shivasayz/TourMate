@@ -1,7 +1,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import { User } from '../models/modelsExport.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, getOne } from '../controllers/handlerFactory.js';
 
 const filterObj = (Obj, ...allowedFields) => {
   const newObj = {};
@@ -60,19 +60,13 @@ const deleteMe = catchAsync(async (req, res, next) => {
 export function createUser(req, res) {
   res.status(500).json({
     status: 'error',
-    message: 'this route is not yet defined!',
+    message: 'this route is not yet defined! Please use Sign up instead',
   });
 }
 
 // Do not update pasword with this!
 export const updateUser = updateOne(User);
 export const deleteUser = deleteOne(User);
-
-export function getUser(req, res) {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not yet defined!',
-  });
-}
+export const getUser = getOne(User);
 
 export { getAllUsers, updateMe, deleteMe };
