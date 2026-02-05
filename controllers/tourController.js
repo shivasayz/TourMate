@@ -1,9 +1,7 @@
 import { format } from 'morgan';
 import { Tour } from '../models/modelsExport.js';
-import APIFeatures from './../utils/apiFeatures.js';
 import catchAsync from '../utils/catchAsync.js';
-import appError from '../utils/appError.js';
-import { deleteOne, updateOne, createOne, getOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, createOne, getOne, getAll } from '../controllers/handlerFactory.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -20,24 +18,7 @@ const aliasTopTours = (req, res, next) => {
   next();
 };
 
-const getAllTours = catchAsync(async (req, res, next) => {
-  // execute query
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-
-  const tours = await features.query;
-
-  // send response
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: { tours },
-  });
-});
-
+const getAllTours = getAll(Tour);
 const getTourById = getOne(Tour, { path: 'reviews'})
 const createTour = createOne(Tour);
 const updateTour = updateOne(Tour);

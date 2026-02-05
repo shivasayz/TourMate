@@ -1,7 +1,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import { User } from '../models/modelsExport.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne, getOne } from '../controllers/handlerFactory.js';
+import { deleteOne, updateOne, getOne, getAll } from '../controllers/handlerFactory.js';
 
 const filterObj = (Obj, ...allowedFields) => {
   const newObj = {};
@@ -10,15 +10,6 @@ const filterObj = (Obj, ...allowedFields) => {
   });
   return newObj;
 };
-
-const getAllUsers = catchAsync(async (req, res, next) => {
-  const user = await User.find();
-
-  res.status(200).json({
-    status: 'success',
-    message: user,
-  });
-});
 
 const updateMe = catchAsync(async (req, res, next) => {
   // 1. Check error if user posted password data
@@ -68,5 +59,6 @@ export function createUser(req, res) {
 export const updateUser = updateOne(User);
 export const deleteUser = deleteOne(User);
 export const getUser = getOne(User);
+const getAllUsers = getAll(User);
 
 export { getAllUsers, updateMe, deleteMe };
