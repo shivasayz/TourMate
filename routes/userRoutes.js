@@ -7,7 +7,7 @@ import {
   deleteUser,
   updateMe,
   deleteMe,
-  getMe
+  getMe,
 } from './../controllers/userController.js';
 import {
   signup,
@@ -15,7 +15,8 @@ import {
   Protected,
   forgotPassword,
   resetPassword,
-  updatePassword
+  updatePassword,
+  restrictTo,
 } from '../controllers/authController.js';
 
 const userRouter = express.Router();
@@ -24,13 +25,19 @@ userRouter.post('/signup', signup);
 userRouter.post('/login', login);
 userRouter.post('/forgotPassword', forgotPassword);
 userRouter.patch('/resetPassword/:token', resetPassword);
-userRouter.patch('/updateMyPassword', Protected, updatePassword);
-userRouter.patch('/updateMe', Protected, updateMe);
-userRouter.delete('/deleteMe', Protected, deleteMe);
-userRouter.get('/me', Protected, getMe, getUser)
 
+// Protect all routes after this middleware
+userRouter.use(Protected);
 
-userRouter.route(`/`).get(Protected, getAllUsers).post(createUser);
+userRouter.patch('/updateMyPassword', updatePassword);
+userRouter.patch('/updateMe', updateMe);
+userRouter.delete('/deleteMe', deleteMe);
+userRouter.get('/me', getMe, getUser);
+
+// Restrict all routes to admins only
+userRouter.use(restrictTo('admin'));
+
+userRouter.route(`/`).get(getAllUsers).post(createUser);
 userRouter.route(`/:id`).get(getUser).patch(updateUser).delete(deleteUser);
 
 export default userRouter;
