@@ -34,6 +34,7 @@ const getAll = Model => catchAsync(async (req, res, next) => {
     .limitFields()
     .paginate();
 
+  // const doc = await features.query.explain();
   const doc = await features.query;
 
   // send response
