@@ -2,6 +2,7 @@ import { format } from 'morgan';
 import { Tour } from '../models/modelsExport.js';
 import catchAsync from '../utils/catchAsync.js';
 import { deleteOne, updateOne, createOne, getOne, getAll } from '../controllers/handlerFactory.js';
+import appError from '../utils/appError.js';
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -117,6 +118,37 @@ const getMonthlyPlan = catchAsync(async (req, res, next) => {
   });
 });
 
+const getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  if (!lat || !lng) {
+    return next(
+      appError(
+        'Please provide latitue and langtitude in the format lat, lng',
+        400,
+      ),
+    );
+  }
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+  const tours = await Tour.find({
+    startLocation: {
+      $geoWithin: {
+        $centerSphere: [[Number(lng), Number(lat)], radius],
+      },
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    result: tours.length,
+    data: {
+      data: tours,
+    },
+  });
+});
+
 export default {
   getAllTours,
   getTourById,
@@ -126,4 +158,5 @@ export default {
   aliasTopTours,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin
 };

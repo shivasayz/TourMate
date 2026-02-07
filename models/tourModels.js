@@ -88,7 +88,7 @@ const tourSchema = new mongoose.Schema(
 
     startDates: [Date],
 
-    startLocatio: {
+    startLocation: {
       type: {
         type: String,
         default: 'Point',
@@ -128,6 +128,7 @@ const tourSchema = new mongoose.Schema(
 // indexes
 tourSchema.index({ price: 1, ratingAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere'})
 
 // Virtual properties
 tourSchema.virtual('durationWeeks').get(function () {
