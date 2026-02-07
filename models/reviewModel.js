@@ -22,13 +22,13 @@ const reviewSchema = new mongoose.Schema(
     tour: {
       type: mongoose.Schema.ObjectId,
       ref: 'Tour',
-      require: [true, 'Review must belong to tour'],
+      required: [true, 'Review must belong to tour'],
     },
 
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      require: [true, 'Review must belong to user'],
+      required: [true, 'Review must belong to user'],
     },
   },
   {
@@ -36,6 +36,8 @@ const reviewSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   },
 );
+
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // Query Middleware
 reviewSchema.pre(/^find/, function (next) {
@@ -46,7 +48,7 @@ reviewSchema.pre(/^find/, function (next) {
     // },
     {
       path: 'user',
-      select: 'name photo'
+      select: 'name photo',
     },
   ]);
   next();
@@ -84,9 +86,10 @@ reviewSchema.post('save', function(){
   this.constructor.calAverageRating(this.tour);
 })
 
-reviewSchema.pre(/^findOneAnd/, async function (next) {
-  this.r = await this.findOne();
-  next();
+reviewSchema.post(/^findOneAnd/, async function () {
+  if (this.r) {
+    await this.r.constructor.calAverageRating(this.r.tour);
+  }
 });
 
 reviewSchema.post(/^findOneAnd/, async function () {
