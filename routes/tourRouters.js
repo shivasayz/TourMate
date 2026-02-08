@@ -11,7 +11,7 @@ const {
   getTourStats,
   getMonthlyPlan,
   getToursWithin,
-  getDistance
+  getDistance,
 } = tourController;
 import reviewController from '../controllers/reviewController.js';
 const { createReview } = reviewController;
@@ -23,10 +23,17 @@ router.use('/:tourId/reviews', reviewRouter);
 
 router.route('/tour-stats').get(getTourStats);
 router.route(`/top-5-cheap`).get(aliasTopTours, getAllTours);
-router.route('/monthly-plan/:year').get(Protected, restrictTo('admin', 'lead-guide'), getMonthlyPlan);
-router.route(`/tours-within/:distance/center/:latlng/unit/:unit`).get(getToursWithin);
+router
+  .route('/monthly-plan/:year')
+  .get(Protected, restrictTo('admin', 'lead-guide'), getMonthlyPlan);
+router
+  .route(`/tours-within/:distance/center/:latlng/unit/:unit`)
+  .get(getToursWithin);
 router.route(`/distances/:latlng/unit/:unit`).get(getDistance);
-router.route(`/`).get(getAllTours).post(Protected, restrictTo('admin', 'lead-guide'), createTour);
+router
+  .route(`/`)
+  .get(getAllTours)
+  .post(Protected, restrictTo('admin', 'lead-guide'), createTour);
 router
   .route(`/:id`)
   .delete(Protected, restrictTo('admin', 'lead-guide'), deleteTour)
