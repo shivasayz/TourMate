@@ -10,12 +10,23 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(helmet());
 
 // Middleware
+//server static files - middleware
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(`./public`));
+
 // console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -52,8 +63,6 @@ app.use(
     ],
   })
 );
-//server static files - middleware
-app.use(express.static(`./public`));
 
 app.use(morgan('dev'));
 
@@ -63,6 +72,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+})
+
 app.use(`/api/v1/tours`, tourRouter);
 app.use(`/api/v1/users`, userRouter);
 app.use(`/api/v1/reviews`, reviewRouter);
