@@ -1,6 +1,6 @@
 const login = async (email, password) => {
   try {
-    const res = await fetch('/api/v1/users/login', {
+    const response = await fetch('/api/v1/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -8,15 +8,19 @@ const login = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
 
-    console.log(await res.json());
+    const data = await response.json();
 
-    if (!res.ok) {
-      alert(res);
-      return;
+    if (response.ok && data.status === 'success') {
+      alert('Logged in successfully');
+
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1500);
+    } else {
+      alert(data.message);
     }
-
-    alert('Logged in successfully!');
   } catch (err) {
+    alert('Something went wrong');
     console.error(err);
   }
 };
