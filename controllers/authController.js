@@ -18,7 +18,7 @@ const createSendToken = (user, statusCode, res) => {
   const cookieOptions = {
     expires: new Date(
       Date.now() +
-        Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
+        Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
   };
@@ -79,12 +79,14 @@ export const Protected = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   // check if toke exists
   if (!token) {
     return next(
-      new appError('You are not logged in, please login to get access.', 401)
+      new appError('You are not logged in, please login to get access.', 401),
     );
   }
 
@@ -97,15 +99,15 @@ export const Protected = catchAsync(async (req, res, next) => {
     return next(
       new appError(
         'The user belonging to this token does no longer exists.',
-        401
-      )
+        401,
+      ),
     );
   }
 
   // 4. Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decode.iat)) {
     return next(
-      new appError('User recently changed password! please login again.', 401)
+      new appError('User recently changed password! please login again.', 401),
     );
   }
 
@@ -119,7 +121,7 @@ export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new appError('You do not have premission to perform this action', 403)
+        new appError('You do not have premission to perform this action', 403),
       );
     }
     next();
@@ -140,7 +142,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
   //3. send it to user email
   const resetURL = `${req.protocol}://${req.get(
-    'host'
+    'host',
   )}/api/v1/users/resetPassword/${resetToke}`;
 
   const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this message`;
@@ -165,8 +167,8 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
     return next(
       new appError(
         'There was an error sending the email, please try again later!',
-        500
-      )
+        500,
+      ),
     );
   }
 });
@@ -216,6 +218,6 @@ export const updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   await user.save();
 
-  // 4. Log user in, send JSON web token 
+  // 4. Log user in, send JSON web token
   createSendToken(user, 200, res);
 });
