@@ -22,7 +22,20 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(helmet());
+// app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: [
+        "'self'",
+        'ws://localhost:*',
+        'http://127.0.0.1:3000',
+        'http://localhost:3000',
+      ],
+    },
+  }),
+);
 
 // Middleware
 //server static files - middleware

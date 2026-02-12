@@ -1,33 +1,29 @@
-const login = async (email, password) => {
+import axios from 'axios';
+import { showAlert, hideAlert } from './alerts';
+
+export const login = async (email, password) => {
   try {
-    const response = await fetch('/api/v1/users/login', {
+    const response = await axios({
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      url: '/api/v1/users/login',
+      data: {
+        email,
+        password,
       },
-      body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
-
-    if (response.ok && data.status === 'success') {
-      alert('Logged in successfully');
-
+    if (response.data.status === 'success') {
+      showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
-    } else {
-      alert(data.message);
     }
   } catch (err) {
-    alert('Something went wrong');
-    console.error(err);
+    const msg =
+      err.response?.data?.message || // if your backend uses top-level message
+      err.response?.data?.error?.message || // if your backend nests message
+      'Something went wrong';
+
+    showAlert('error', msg);
   }
 };
-
-document.querySelector('.form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  login(email, password);
-});
