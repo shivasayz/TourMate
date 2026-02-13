@@ -124,6 +124,7 @@ export const Protected = catchAsync(async (req, res, next) => {
 
   // GRANT accress to protected route
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 

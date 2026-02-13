@@ -39,4 +39,10 @@ const getLoginForm = catchAsync(async (req, res, next) => {
   });
 });
 
-export { getOverview, getTour, getLoginForm };
+const getAccount = (req, res) => {
+  res.status(200).render('account', {
+    title: 'Your account',
+  });
+};
+
+export { getOverview, getTour, getLoginForm, getAccount };
