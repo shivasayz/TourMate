@@ -59,6 +59,7 @@ app.use('/api', limit);
 // Body parser, reading data from body into req,body
 app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); // to get the data from form to server
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -94,11 +95,16 @@ app.use(`/api/v1/tours`, tourRouter);
 app.use(`/api/v1/users`, userRouter);
 app.use(`/api/v1/reviews`, reviewRouter);
 
-app.use(function (req, res, next) {
-  // const err = new Error(`Can't find ${req.originalUrl} on this server!`);
-  // err.statusCode = 404;
-  // err.status = "Resource not found"
+// app.use(function (req, res, next) {
+//   // const err = new Error(`Can't find ${req.originalUrl} on this server!`);
+//   // err.statusCode = 404;
+//   // err.status = "Resource not found"
 
+//   next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
+// });
+
+app.use(function (req, res, next) {
+  if (req.originalUrl.startsWith('/.well-known/')) return next(); // skip
   next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
