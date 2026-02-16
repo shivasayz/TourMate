@@ -9,6 +9,7 @@ import {
   deleteMe,
   getMe,
   uploadUserPhoto,
+  resizeUserImage,
 } from './../controllers/userController.js';
 import {
   signup,
@@ -33,7 +34,7 @@ userRouter.patch('/resetPassword/:token', resetPassword);
 userRouter.use(Protected);
 
 userRouter.patch('/updateMyPassword', updatePassword);
-userRouter.patch('/updateMe', uploadUserPhoto, updateMe);
+userRouter.patch('/updateMe', uploadUserPhoto, resizeUserImage, updateMe);
 userRouter.delete('/deleteMe', deleteMe);
 userRouter.get('/me', getMe, getUser);
 
