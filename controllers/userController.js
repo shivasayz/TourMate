@@ -1,7 +1,12 @@
 import catchAsync from '../utils/catchAsync.js';
 import { User } from '../models/modelsExport.js';
 import appError from '../utils/appError.js';
-import { deleteOne, updateOne, getOne, getAll } from '../controllers/handlerFactory.js';
+import {
+  deleteOne,
+  updateOne,
+  getOne,
+  getAll,
+} from '../controllers/handlerFactory.js';
 
 const filterObj = (Obj, ...allowedFields) => {
   const newObj = {};
@@ -17,13 +22,16 @@ const getMe = (req, res, next) => {
 };
 
 const updateMe = catchAsync(async (req, res, next) => {
+  console.log(req.file);
+  console.log(req.body);
+
   // 1. Check error if user posted password data
   if (req.body.password || req.body.confirmPassword) {
     return next(
       new appError(
         'This route is not for password update. please use /updateMyPassword',
-        400
-      )
+        400,
+      ),
     );
   }
 

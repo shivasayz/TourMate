@@ -19,6 +19,11 @@ import {
   updatePassword,
   restrictTo,
 } from '../controllers/authController.js';
+import multer from 'multer';
+
+const upload = multer({
+  dest: 'public/img/users',
+});
 
 const userRouter = express.Router();
 
@@ -32,7 +37,7 @@ userRouter.patch('/resetPassword/:token', resetPassword);
 userRouter.use(Protected);
 
 userRouter.patch('/updateMyPassword', updatePassword);
-userRouter.patch('/updateMe', updateMe);
+userRouter.patch('/updateMe', upload.single('photo'), updateMe);
 userRouter.delete('/deleteMe', deleteMe);
 userRouter.get('/me', getMe, getUser);
 
