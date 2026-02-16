@@ -8,6 +8,7 @@ import {
   updateMe,
   deleteMe,
   getMe,
+  uploadUserPhoto,
 } from './../controllers/userController.js';
 import {
   signup,
@@ -19,11 +20,6 @@ import {
   updatePassword,
   restrictTo,
 } from '../controllers/authController.js';
-import multer from 'multer';
-
-const upload = multer({
-  dest: 'public/img/users',
-});
 
 const userRouter = express.Router();
 
@@ -37,7 +33,7 @@ userRouter.patch('/resetPassword/:token', resetPassword);
 userRouter.use(Protected);
 
 userRouter.patch('/updateMyPassword', updatePassword);
-userRouter.patch('/updateMe', upload.single('photo'), updateMe);
+userRouter.patch('/updateMe', uploadUserPhoto, updateMe);
 userRouter.delete('/deleteMe', deleteMe);
 userRouter.get('/me', getMe, getUser);
 
