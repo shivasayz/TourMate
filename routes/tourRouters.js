@@ -12,6 +12,8 @@ const {
   getMonthlyPlan,
   getToursWithin,
   getDistance,
+  uploadTourImages,
+  resizeImages,
 } = tourController;
 import reviewController from '../controllers/reviewController.js';
 const { createReview } = reviewController;
@@ -37,7 +39,13 @@ router
 router
   .route(`/:id`)
   .delete(Protected, restrictTo('admin', 'lead-guide'), deleteTour)
-  .patch(Protected, restrictTo('admin', 'lead-guide'), updateTour)
+  .patch(
+    Protected,
+    restrictTo('admin', 'lead-guide'),
+    uploadTourImages,
+    resizeImages,
+    updateTour,
+  )
   .get(getTourById);
 
 export default router;

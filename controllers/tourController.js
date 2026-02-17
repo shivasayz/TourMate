@@ -1,8 +1,54 @@
 import { format } from 'morgan';
 import { Tour } from '../models/modelsExport.js';
 import catchAsync from '../utils/catchAsync.js';
-import { deleteOne, updateOne, createOne, getOne, getAll } from '../controllers/handlerFactory.js';
+import {
+  deleteOne,
+  updateOne,
+  createOne,
+  getOne,
+  getAll,
+} from '../controllers/handlerFactory.js';
 import appError from '../utils/appError.js';
+import multer from 'multer';
+import sharp from 'sharp';
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(
+      new appError(
+        'Uploaded file is not an image, please upload images only',
+        404,
+      ),
+      false,
+    );
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+const uploadTourImages = upload.fields([
+  {
+    name: 'imageCover',
+    maxCount: 1,
+  },
+
+  {
+    name: 'images',
+    maxCount: 3,
+  },
+]);
+
+const resizeImages = (req, res, next) => {
+  console.log(req.files);
+  next();
+};
 
 // middlewares
 const aliasTopTours = (req, res, next) => {
@@ -20,7 +66,7 @@ const aliasTopTours = (req, res, next) => {
 };
 
 const getAllTours = getAll(Tour);
-const getTourById = getOne(Tour, { path: 'reviews'})
+const getTourById = getOne(Tour, { path: 'reviews' });
 const createTour = createOne(Tour);
 const updateTour = updateOne(Tour);
 const deleteTour = deleteOne(Tour);
@@ -178,9 +224,9 @@ const getDistance = catchAsync(async (req, res, next) => {
     status: 'success',
     result: distances.length,
     data: {
-      data: distances
-    }
-  })
+      data: distances,
+    },
+  });
 });
 
 export default {
@@ -193,5 +239,7 @@ export default {
   getTourStats,
   getMonthlyPlan,
   getToursWithin,
-  getDistance
+  getDistance,
+  uploadTourImages,
+  resizeImages,
 };
