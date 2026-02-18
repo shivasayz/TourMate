@@ -1,27 +1,60 @@
 import nodemailer from 'nodemailer';
+import pug from 'pug';
+import { convert } from 'html-to-text';
 
-const sendEmail = async (options) => {
-  // 1. Create a transporter
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-  // 2. Define the email options
-  const mailOptions = {
-    from: 'Shiva Ram <send@shiva.io>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-    // html:
-  };
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  // 3. Send the email
-  await transporter.sendMail(mailOptions);
-};
+export class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Shiva Ram <${process.env.EMAIL_FROM}>`;
+  }
 
-export default sendEmail;
+  newTransport() {
+    if (process.env.NODE_ENV === 'production') {
+      return 1;
+    }
+
+    // 1. Create a transporter
+    return nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+  }
+
+  // 2. send a actual email
+  async send(templete, subject) {
+    // Render HTML based on a pug template
+    const html = pug.renderFile(`${__dirname}/../views/email/${templete}.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject,
+    });
+
+    // define email options
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: convert(html),
+    };
+
+    // create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendWelcome() {
+    await this.send('welcome', 'Welcome to NATOURS!');
+  }
+}

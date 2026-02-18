@@ -4,7 +4,7 @@ import { User } from '../models/modelsExport.js';
 import appError from './../utils/appError.js';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import sendEmail from '../utils/email.js';
+import { Email } from '../utils/email.js';
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -47,7 +47,9 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role,
   });
-
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  console.log(url);
+  await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, res);
 });
 
@@ -191,11 +193,11 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this message`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Your password reset token (Valid for 10 min)',
-      message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'Your password reset token (Valid for 10 min)',
+    //   message,
+    // });
 
     res.status(200).json({
       status: 'success',
