@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 export class Email {
   constructor(user, url) {
-    this.to = 'randomweirdlunatic@gmail.com';
+    this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
     this.from = `Shiva Ram <${process.env.EMAIL_FROM}>`;
