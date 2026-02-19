@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 export class Email {
   constructor(user, url) {
-    this.to = user.email;
+    this.to = 'randomweirdlunatic@gmail.com';
     this.firstName = user.name.split(' ')[0];
     this.url = url;
     this.from = `Shiva Ram <${process.env.EMAIL_FROM}>`;
@@ -18,7 +18,13 @@ export class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      return 1;
+      return nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD,
+        },
+      });
     }
 
     // 1. Create a transporter
