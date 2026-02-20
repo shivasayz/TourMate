@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import tourRouter from './routes/tourRouters.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
 import viewRouter from './routes/viewRoutes.js';
 import appError from './utils/appError.js';
 import globalErrorHandler from './controllers/errorController.js';
@@ -27,6 +28,8 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://js.stripe.com'],
+      frameSrc: ["'self'", 'https://js.stripe.com'],
       connectSrc: [
         "'self'",
         'ws://localhost:*',
@@ -93,6 +96,7 @@ app.use('/', viewRouter);
 app.use(`/api/v1/tours`, tourRouter);
 app.use(`/api/v1/users`, userRouter);
 app.use(`/api/v1/reviews`, reviewRouter);
+app.use(`/api/v1/bookings`, bookingRouter);
 
 // app.use(function (req, res, next) {
 //   // const err = new Error(`Can't find ${req.originalUrl} on this server!`);
