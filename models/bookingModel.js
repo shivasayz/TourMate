@@ -1,5 +1,4 @@
-import { mongo, Mongoose } from "mongoose";
-import * as mongoose from 'mongoose';
+import { Mongoose } from "mongoose";
 
 const bookingSchema = new Mongoose.Schema({
   tour:  {
