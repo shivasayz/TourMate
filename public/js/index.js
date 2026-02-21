@@ -1,20 +1,32 @@
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signup } from './login';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 
-const form = document.querySelector('.form--login');
+const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookbtn = document.querySelector('#book-tour');
 
-if (form) {
-  form.addEventListener('submit', (e) => {
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     login(email, password);
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('passwordConfirm').value;
+    signup(name, email, password, confirmPassword);
   });
 }
 
@@ -59,3 +71,18 @@ if (bookbtn)
     const { tourId } = e.target.dataset;
     bookTour(tourId);
   });
+
+// Reviews scroll arrows
+const reviewsLeftArrow = document.querySelector('.reviews__arrow--left');
+const reviewsRightArrow = document.querySelector('.reviews__arrow--right');
+const reviewsContainer = document.querySelector('.reviews');
+
+if (reviewsLeftArrow && reviewsRightArrow && reviewsContainer) {
+  reviewsLeftArrow.addEventListener('click', () => {
+    reviewsContainer.scrollBy({ left: -400, behavior: 'smooth' });
+  });
+  
+  reviewsRightArrow.addEventListener('click', () => {
+    reviewsContainer.scrollBy({ left: 400, behavior: 'smooth' });
+  });
+}

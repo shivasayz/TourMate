@@ -1,9 +1,10 @@
 extends base
 
 block content
-  main.main
+  main.main.auth-page
     .login-form
       h2.heading-secondary.ma-bt-lg Log into your account
+      p.auth-subtitle Welcome back! Please enter your details.
       form.form.form--login
         .form__group
           label.form__label(for='email') Email address
@@ -15,3 +16,6 @@ block content
 
         .form__group
           button.btn.btn--green(type='submit') Login
+      
+      p.auth-footer Don't have an account? 
+        a.auth-link(href='/signup') Sign up

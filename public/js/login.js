@@ -28,6 +28,35 @@ export const login = async (email, password) => {
   }
 };
 
+export const signup = async (name, email, password, confirmPassword) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: '/api/v1/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        confirmPassword,
+      },
+    });
+
+    if (response.data.status === 'success') {
+      showAlert('success', 'Account created successfully!');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1500);
+    }
+  } catch (err) {
+    const msg =
+      err.response?.data?.message ||
+      err.response?.data?.error?.message ||
+      'Something went wrong';
+
+    showAlert('error', msg);
+  }
+};
+
 export const logout = async () => {
   try {
     const res = await axios({

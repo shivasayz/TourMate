@@ -41,6 +41,12 @@ const getLoginForm = catchAsync(async (req, res, next) => {
   });
 });
 
+const getSignupForm = catchAsync(async (req, res, next) => {
+  res.status(200).render('signup', {
+    title: 'Create your account',
+  });
+});
+
 const getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',
@@ -81,4 +87,4 @@ const updateUserData = catchAsync(async (req, res) => {
   });
 });
 
-export { getOverview, getTour, getLoginForm, getAccount, updateUserData, getMyTours };
+export { getOverview, getTour, getLoginForm, getSignupForm, getAccount, updateUserData, getMyTours };
