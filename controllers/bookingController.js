@@ -3,6 +3,13 @@ import appError from '../utils/appError.js';
 import Tour from '../models/tourModels.js';
 import Booking from '../models/bookingModel.js';
 import Stripe from 'stripe';
+import {
+  deleteOne,
+  updateOne,
+  createOne,
+  getOne,
+  getAll,
+} from './handlerFactory.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -53,4 +60,18 @@ const createBookingCheckout = catchAsync(async (req, res, next) => {
   res.redirect(req.originalUrl.split('?')[0]);
 });
 
-export { getCheckoutSession, createBookingCheckout };
+const createBooking = createOne(Booking);
+const getBooking = getOne(Booking);
+const getAllBooking = getAll(Booking);
+const updateBooking = updateOne(Booking);
+const deleteBooking = deleteOne(Booking);
+
+export {
+  getCheckoutSession,
+  createBookingCheckout,
+  createBooking,
+  getBooking,
+  getAllBooking,
+  updateBooking,
+  deleteBooking,
+};
