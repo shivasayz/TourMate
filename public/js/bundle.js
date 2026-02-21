@@ -12990,8 +12990,6 @@ var bookTour = exports.bookTour = /*#__PURE__*/function () {
           return (0, _axios.default)("/api/v1/bookings/checkout-session/".concat(tourId));
         case 1:
           session = _context.v;
-          console.log(session);
-
           // 2. Create checkout from + charge credit card
           stripe = Stripe('pk_test_51T2X2LJQ1jbdbaxh7gTZN5hfvKWHsw4SVjTRQSOmrmyisKbzXPFTpjYF4N66RJVj3S7xmcW8RBWIbEeSrvD8Uypb00Oul3uz9z');
           _context.n = 2;
