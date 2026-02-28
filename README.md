@@ -47,8 +47,18 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 </div>
 
 <div align="center">
+  <img src="./docs/screenshots/tour-reviews.png" alt="Tour Reviews" width="800"/>
+  <p><em>User Reviews and Ratings Section</em></p>
+</div>
+
+<div align="center">
   <img src="./docs/screenshots/account-page.png" alt="User Account" width="800"/>
-  <p><em>User Account Dashboard</em></p>
+  <p><em>User Account Settings</em></p>
+</div>
+
+<div align="center">
+  <img src="./docs/screenshots/account-bookings.png" alt="My Bookings" width="800"/>
+  <p><em>User Booking History</em></p>
 </div>
 
 ---
@@ -76,7 +86,17 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 
 <div align="center">
   <img src="./docs/screenshots/stripe-payment.png" alt="Stripe Payment" width="700"/>
-  <p><em>Secure Stripe Payment Integration</em></p>
+  <p><em>Stripe Payment Gateway</em></p>
+</div>
+
+<div align="center">
+  <img src="./docs/screenshots/stripe-checkout.png" alt="Stripe Checkout" width="700"/>
+  <p><em>Secure Checkout Process</em></p>
+</div>
+
+<div align="center">
+  <img src="./docs/screenshots/stripe-dashboard.png" alt="Stripe Dashboard" width="700"/>
+  <p><em>Payment Transactions Dashboard</em></p>
 </div>
 
 ### ⭐ Reviews & Ratings
