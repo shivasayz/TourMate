@@ -3,7 +3,7 @@
   <p><strong>A Full-Stack Nature Tour Booking Platform</strong></p>
   <p>Modern web application built with Node.js, Express, MongoDB, and integrated payment processing</p>
   
-  ![TourMate Banner](docs/screenshots/Home-Page.png)
+  ![TourMate Banner](./docs/screenshots/Home%20Page.png)
   
   [![Node.js](https://img.shields.io/badge/Node.js-v14+-green.svg)](https://nodejs.org/)
   [![MongoDB](https://img.shields.io/badge/MongoDB-v4+-green.svg)](https://www.mongodb.com/)
@@ -16,6 +16,7 @@
 - [Overview](#-overview)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
+<!-- - [Demo](#-demo) -->
 - [Getting Started](#-getting-started)
 - [API Documentation](#-api-documentation)
 - [Project Architecture](#-project-architecture)
@@ -40,11 +41,15 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 
 ### 📸 Application Screenshots
 
-![Tour Detail Page](docs/screenshots/Tour-Detail-Page-1.png)
-*Tour Detail Page with Interactive Maps*
+<div align="center">
+  <img src="./docs/screenshots/Tour%20Detail%20Page-1.png" alt="Tour Detail Page" width="800"/>
+  <p><em>Tour Detail Page with Interactive Maps</em></p>
+</div>
 
-![User Account Dashboard](docs/screenshots/Account-Page-1.png)
-*User Account Dashboard*
+<div align="center">
+  <img src="./docs/screenshots/Account%20Page-1.png" alt="User Account" width="800"/>
+  <p><em>User Account Dashboard</em></p>
+</div>
 
 ---
 
@@ -69,8 +74,10 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 - Booking history and management
 - Automated email confirmations
 
-![Stripe Payment Integration](docs/screenshots/Stripe-Payment-Gateway-1.png)
-*Secure Stripe Payment Integration*
+<div align="center">
+  <img src="./docs/screenshots/Stripe%20Payment%20Gateway-1.png" alt="Stripe Payment" width="700"/>
+  <p><em>Secure Stripe Payment Integration</em></p>
+</div>
 
 ### ⭐ Reviews & Ratings
 - User reviews with 5-star rating system
@@ -84,8 +91,10 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 - Password update functionality
 - Account deactivation option
 
-![Login Page](docs/screenshots/Login-Page.png)
-*Secure Login Interface*
+<div align="center">
+  <img src="./docs/screenshots/Login%20Page.png" alt="Login Page" width="700"/>
+  <p><em>Secure Login Interface</em></p>
+</div>
 
 ### 🗺️ Interactive Maps
 - Mapbox GL integration for tour locations
