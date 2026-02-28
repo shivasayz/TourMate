@@ -3,7 +3,7 @@
   <p><strong>A Full-Stack Nature Tour Booking Platform</strong></p>
   <p>Modern web application built with Node.js, Express, MongoDB, and integrated payment processing</p>
   
-  ![TourMate Banner](./docs/screenshots/Home%20Page.png)
+  ![TourMate Banner](./docs/screenshots/home-page.png)
   
   [![Node.js](https://img.shields.io/badge/Node.js-v14+-green.svg)](https://nodejs.org/)
   [![MongoDB](https://img.shields.io/badge/MongoDB-v4+-green.svg)](https://www.mongodb.com/)
@@ -42,12 +42,12 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 ### 📸 Application Screenshots
 
 <div align="center">
-  <img src="./docs/screenshots/Tour%20Detail%20Page-1.png" alt="Tour Detail Page" width="800"/>
+  <img src="./docs/screenshots/tour-detail-page.png" alt="Tour Detail Page" width="800"/>
   <p><em>Tour Detail Page with Interactive Maps</em></p>
 </div>
 
 <div align="center">
-  <img src="./docs/screenshots/Account%20Page-1.png" alt="User Account" width="800"/>
+  <img src="./docs/screenshots/account-page.png" alt="User Account" width="800"/>
   <p><em>User Account Dashboard</em></p>
 </div>
 
@@ -75,7 +75,7 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 - Automated email confirmations
 
 <div align="center">
-  <img src="./docs/screenshots/Stripe%20Payment%20Gateway-1.png" alt="Stripe Payment" width="700"/>
+  <img src="./docs/screenshots/stripe-payment.png" alt="Stripe Payment" width="700"/>
   <p><em>Secure Stripe Payment Integration</em></p>
 </div>
 
@@ -92,7 +92,7 @@ TourMate is a comprehensive full-stack web application that enables users to dis
 - Account deactivation option
 
 <div align="center">
-  <img src="./docs/screenshots/Login%20Page.png" alt="Login Page" width="700"/>
+  <img src="./docs/screenshots/login-page.png" alt="Login Page" width="700"/>
   <p><em>Secure Login Interface</em></p>
 </div>
 
