@@ -495,9 +495,3 @@ Developing TourMate provided hands-on experience with:
 - Environment configuration management
 - Production vs development workflows
 - Server deployment and monitoring
-
----
-
-<div align="center">
-  <p>Made with ❤️ by Shiva</p>
-</div>
