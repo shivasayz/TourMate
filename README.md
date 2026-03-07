@@ -16,7 +16,6 @@
 - [Overview](#-overview)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
-<!-- - [Demo](#-demo) -->
 - [Getting Started](#-getting-started)
 - [API Documentation](#-api-documentation)
 - [Project Architecture](#-project-architecture)
