@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🌿 TourMate</h1>
   <p><strong>A Full-Stack Nature Tour Booking Platform</strong></p>
-  <p>Modern web application built with Node.js, Express, MongoDB, and integrated payment processing</p>
+  <p>Modern web application built with Node.js, Express, MongoDB, and integrated payment processing with stripe</p>
   
   ![TourMate Banner](./docs/screenshots/home-page.png)
   
